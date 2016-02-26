@@ -1,0 +1,106 @@
+From f36fb7a371478b1ac58a88ee81dc4931933cff0c Mon Sep 17 00:00:00 2001
+From: HashBang <hashbang173@gmail.com>
+Date: Sun, 7 Feb 2016 18:22:17 -0500
+Subject: [PATCH] fix build with android-6.0 tree
+
+Change-Id: Ia1126b186f77875868e417efeb121ba894580aa0
+---
+ lib/containers.c   | 1 +
+ lib/framebuffer.h  | 1 +
+ lib/progressdots.c | 1 +
+ lib/util.c         | 5 ++---
+ multirom.h         | 2 ++
+ trampoline/adb.c   | 2 ++
+ 8 files changed, 16 insertions(+), 4 deletions(-)
+ create mode 100644 .gitmodules
+
+diff --git a/lib/containers.c b/lib/containers.c
+index 2fec79c..f45f91f 100644
+--- a/lib/containers.c
++++ b/lib/containers.c
+@@ -15,6 +15,7 @@
+  */
+ 
+ #include <stdlib.h>
++#include <string.h>
+ 
+ #include "containers.h"
+ #include "util.h"
+diff --git a/lib/progressdots.c b/lib/progressdots.c
+index 220939e..4f39e64 100644
+--- a/lib/progressdots.c
++++ b/lib/progressdots.c
+@@ -16,6 +16,7 @@
+  */
+ 
+ #include <unistd.h>
++#include <stdlib.h>
+ 
+ #include "progressdots.h"
+ #include "colors.h"
+diff --git a/lib/util.c b/lib/util.c
+index 37a0f74..7846ab0 100644
+--- a/lib/util.c
++++ b/lib/util.c
+@@ -13,20 +13,19 @@
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  */
++#define _GNU_SOURCE
+ 
+ #include <stdarg.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <ctype.h>
+ #include <errno.h>
+ #include <time.h>
+ #include <dirent.h>
+-#include <fcntl.h>
+ #include <cutils/android_reboot.h>
++#include <fcntl.h>
+ #include <unistd.h>
+-
+ #ifdef HAVE_SELINUX
+ #include <selinux/label.h>
+ #endif
+diff --git a/multirom.h b/multirom.h
+index 09462a2..5b310e0 100644
+--- a/multirom.h
++++ b/multirom.h
+@@ -20,6 +20,8 @@
+ 
+ #include <pthread.h>
+ #include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
+ 
+ #include "lib/fstab.h"
+ #include "lib/containers.h"
+diff --git a/trampoline/adb.c b/trampoline/adb.c
+index e2df45e..e00bc3c 100644
+--- a/trampoline/adb.c
++++ b/trampoline/adb.c
+@@ -27,7 +27,9 @@
+ #include <sys/mount.h>
+ #include <sys/klog.h>
+ #include <linux/loop.h>
++#include <unistd.h>
+ 
++#include <fcntl.h>
+ #include "adb.h"
+ #include "../lib/util.h"
+ #include "../lib/log.h"
+diff --git a/lib/framebuffer.h b/lib/framebuffer.h
+index 66fa3f3..dfd70c5 100644
+--- a/lib/framebuffer.h
++++ b/lib/framebuffer.h
+@@ -21,6 +21,7 @@
+ #include <linux/fb.h>
+ #include <stdarg.h>
+ #include <pthread.h>
++#include <string.h>
+ 
+ #if defined(RECOVERY_BGRA) || defined(RECOVERY_RGBX) || defined(RECOVERY_ABGR)
+ #define PIXEL_SIZE 4

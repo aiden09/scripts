@@ -1,0 +1,13 @@
+diff --git a/adb.c b/adb.c
+index 4789e0a..bca922e 100644
+--- a/adb.c
++++ b/adb.c
+@@ -24,6 +24,8 @@
+ #include <string.h>
+ #include <time.h>
+ #include <sys/time.h>
++#include <sys/prctl.h>
++#include <sys/capability.h>
+ 
+ #include "sysdeps.h"
+ #include "adb.h"
