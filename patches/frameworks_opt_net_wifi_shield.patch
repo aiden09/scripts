@@ -1,8 +1,8 @@
 diff --git a/service/java/com/android/server/wifi/WifiNative.java b/service/java/com/android/server/wifi/WifiNative.java
-index a724fd9..9a3164f 100644
+index 84c659d..f8c45fa 100644
 --- a/service/java/com/android/server/wifi/WifiNative.java
 +++ b/service/java/com/android/server/wifi/WifiNative.java
-@@ -708,6 +708,10 @@ public class WifiNative {
+@@ -902,6 +902,10 @@ public class WifiNative {
          return doBooleanCommand("WPS_CANCEL");
      }
  
@@ -14,10 +14,10 @@ index a724fd9..9a3164f 100644
          int value = (enabled == true) ? 1 : 0;
          return doBooleanCommand("SET persistent_reconnect " + value);
 diff --git a/service/java/com/android/server/wifi/p2p/WifiP2pServiceImpl.java b/service/java/com/android/server/wifi/p2p/WifiP2pServiceImpl.java
-index 2a397ba..d71777f 100644
+index ff814cd..7b03867 100644
 --- a/service/java/com/android/server/wifi/p2p/WifiP2pServiceImpl.java
 +++ b/service/java/com/android/server/wifi/p2p/WifiP2pServiceImpl.java
-@@ -337,6 +337,7 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
+@@ -339,6 +339,7 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
                case WifiP2pManager.STOP_LISTEN:
                case WifiP2pManager.SET_CHANNEL:
                case WifiP2pManager.START_WPS:
@@ -25,7 +25,7 @@ index 2a397ba..d71777f 100644
                case WifiP2pManager.ADD_LOCAL_SERVICE:
                case WifiP2pManager.REMOVE_LOCAL_SERVICE:
                case WifiP2pManager.CLEAR_LOCAL_SERVICES:
-@@ -462,6 +463,13 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
+@@ -464,6 +465,13 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
          mP2pStateMachine.sendMessage(SET_MIRACAST_MODE, mode);
      }
  
@@ -39,7 +39,7 @@ index 2a397ba..d71777f 100644
      @Override
      protected void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
          if (mContext.checkCallingOrSelfPermission(android.Manifest.permission.DUMP)
-@@ -700,6 +708,10 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
+@@ -703,6 +711,10 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
                      replyToMessage(message, WifiP2pManager.START_WPS_FAILED,
                          WifiP2pManager.BUSY);
                      break;
@@ -50,7 +50,7 @@ index 2a397ba..d71777f 100644
                  case WifiP2pManager.GET_HANDOVER_REQUEST:
                  case WifiP2pManager.GET_HANDOVER_SELECT:
                      replyToMessage(message, WifiP2pManager.RESPONSE_GET_HANDOVER_MESSAGE, null);
-@@ -845,6 +857,10 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
+@@ -848,6 +860,10 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
                      replyToMessage(message, WifiP2pManager.START_WPS_FAILED,
                              WifiP2pManager.P2P_UNSUPPORTED);
                      break;
@@ -61,7 +61,7 @@ index 2a397ba..d71777f 100644
                  case WifiP2pManager.START_LISTEN:
                      replyToMessage(message, WifiP2pManager.START_LISTEN_FAILED,
                              WifiP2pManager.P2P_UNSUPPORTED);
-@@ -1339,8 +1355,10 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
+@@ -1344,8 +1360,10 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
                          } else {
                              ret = mWifiNative.p2pGroupAdd(true);
                          }
@@ -73,15 +73,15 @@ index 2a397ba..d71777f 100644
                      }
  
                      if (ret) {
-@@ -2005,6 +2023,7 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
-                 case WifiP2pManager.REMOVE_GROUP:
-                     if (DBG) logd(getName() + " remove group");
+@@ -2019,6 +2037,7 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
+                      */
+                     enableBTCoex();
                      if (mWifiNative.p2pGroupRemove(mGroup.getInterface())) {
 +                        mAutonomousGroup = false;
                          transitionTo(mOngoingGroupRemovalState);
                          replyToMessage(message, WifiP2pManager.REMOVE_GROUP_SUCCEEDED);
                      } else {
-@@ -2073,6 +2092,13 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
+@@ -2091,6 +2110,13 @@ public final class WifiP2pServiceImpl extends IWifiP2pManager.Stub {
                      replyToMessage(message, ret ? WifiP2pManager.START_WPS_SUCCEEDED :
                              WifiP2pManager.START_WPS_FAILED);
                      break;
