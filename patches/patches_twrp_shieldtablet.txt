@@ -1,1 +1,0 @@
-shieldtablet_init_rename	device/nvidia/shieldtablet
