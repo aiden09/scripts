@@ -21,7 +21,7 @@ SetVars () {
 
 	# Set list of devices if not already set
 	if [ ! -f ${TOPBUILDDIR}/scripts/devices.txt ]; then
-		declare -a BUILDDEVICES=("roth" "shieldtablet" "foster");
+		declare -a BUILDDEVICES=("roth" "shieldtablet" "foster" "loki");
 		for dev in "${BUILDDEVICES[@]}"
 		do
 			echo ${dev} >> ${TOPBUILDDIR}/scripts/devices.txt;
