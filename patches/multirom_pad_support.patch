@@ -1,8 +1,8 @@
 diff --git a/device_defines.mk b/device_defines.mk
-index 76518e0..e36a10c 100644
+index 2c4113e..e317a39 100644
 --- a/device_defines.mk
 +++ b/device_defines.mk
-@@ -110,3 +110,14 @@ endif
+@@ -108,3 +108,14 @@ endif
  ifneq ($(MR_RD_ADDR),)
      LOCAL_CFLAGS += -DMR_RD_ADDR=$(MR_RD_ADDR)
  endif
@@ -18,14 +18,14 @@ index 76518e0..e36a10c 100644
 +    LOCAL_CFLAGS += -DMR_PAD_CONFIRM=$(MR_PAD_CONFIRM)
 +endif
 diff --git a/lib/input.c b/lib/input.c
-index 6617e81..4bf6172 100644
+index f7719f8..d5b6446 100644
 --- a/lib/input.c
 +++ b/lib/input.c
 @@ -171,7 +171,11 @@ static int ev_get(struct input_event *ev, unsigned dont_wait)
      return -1;
  }
  
-+#if !defined(MR_PAD_CONFIRM) || !defined(MR_PAD_UP) || !defined(MR_PAD_CONFIRM)
++#if !defined(MR_PAD_CONFIRM) || !defined(MR_PAD_UP) || !defined(MR_PAD_DOWN)
  #define IS_KEY_HANDLED(key) (key >= KEY_VOLUMEDOWN && key <= KEY_POWER)
 +#else
 +#define IS_KEY_HANDLED(key) (1)
@@ -33,7 +33,15 @@ index 6617e81..4bf6172 100644
  
  static int screenshot_trigger_handle_keyevent(int code, int pressed)
  {
-@@ -730,12 +734,21 @@ int keyaction_handle_keyevent(int key, int press)
+@@ -296,6 +300,7 @@ void touch_commit_events(struct timeval ev_time)
+ 
+ static void *input_thread_work(UNUSED void *cookie)
+ {
++    sleep(2);
+     ev_init();
+     struct input_event ev;
+ 
+@@ -726,12 +731,21 @@ int keyaction_handle_keyevent(int key, int press)
      switch(key)
      {
          case KEY_POWER:

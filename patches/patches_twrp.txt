@@ -8,3 +8,5 @@ multirom_kexec_tegra4	system/extras/multirom/kexec-tools
 twrp_flipped	bootable/recovery
 multirom_omni6	system/extras/multirom
 adbd_omni6	system/extras/multirom/adbd
+multirom_kexec_arm64	system/extras/multirom
+multirom_kexec_arm64_revert_sd810	system/extras/multirom/kexec-tools-arm64
