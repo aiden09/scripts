@@ -1,0 +1,73 @@
+From 5071d73867459e64c9737fdd69df6a474d482eda Mon Sep 17 00:00:00 2001
+From: Mike Kasick <mike@kasick.org>
+Date: Fri, 27 Sep 2013 19:03:52 +0200
+Subject: [PATCH 3/3] Add kexec-hardboot options
+
+---
+ kexec/kexec-syscall.h | 1 +
+ kexec/kexec.c         | 7 +++++++
+ kexec/kexec.h         | 4 +++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/kexec/kexec-syscall.h b/kexec/kexec-syscall.h
+index 267b75b..615c78f 100644
+--- a/kexec/kexec-syscall.h
++++ b/kexec/kexec-syscall.h
+@@ -90,6 +90,7 @@ static inline long kexec_file_load(int kernel_fd, int initrd_fd,
+ 
+ #define KEXEC_ON_CRASH		0x00000001
+ #define KEXEC_PRESERVE_CONTEXT	0x00000002
++#define KEXEC_HARDBOOT		0x00000004
+ #define KEXEC_ARCH_MASK		0xffff0000
+ 
+ /* Flags for kexec file based system call */
+diff --git a/kexec/kexec.c b/kexec/kexec.c
+index 4a550f1..1009534 100644
+--- a/kexec/kexec.c
++++ b/kexec/kexec.c
+@@ -986,6 +986,7 @@ void usage(void)
+ 	       "                      to original kernel.\n"
+ 	       " -s, --kexec-file-syscall Use file based syscall for kexec operation\n"
+ 	       " -d, --debug           Enable debugging to help spot a failure.\n"
++	       "     --load-hardboot  Load the new kernel and hard boot it.\n"
+ 	       "\n"
+ 	       "Supported kernel file types and options: \n");
+ 	for (i = 0; i < file_types; i++) {
+@@ -1367,6 +1368,12 @@ int main(int argc, char *argv[])
+ 		case OPT_LITE:
+ 			do_lite = 1;
+ 			break;
++		case OPT_LOAD_HARDBOOT:
++			do_load = 1;
++			do_exec = 0;
++			do_shutdown = 0;
++			kexec_flags = KEXEC_HARDBOOT;
++			break;
+ 		default:
+ 			break;
+ 		}
+diff --git a/kexec/kexec.h b/kexec/kexec.h
+index e4658e3..840bf30 100644
+--- a/kexec/kexec.h
++++ b/kexec/kexec.h
+@@ -227,7 +227,8 @@ extern int file_types;
+ #define OPT_LOAD_PRESERVE_CONTEXT 259
+ #define OPT_LOAD_JUMP_BACK_HELPER 260
+ #define OPT_ENTRY		261
+-#define OPT_MAX			262
++#define OPT_LOAD_HARDBOOT	262
++#define OPT_MAX			263
+ #define KEXEC_OPTIONS \
+ 	{ "help",		0, 0, OPT_HELP }, \
+ 	{ "version",		0, 0, OPT_VERSION }, \
+@@ -248,6 +249,7 @@ extern int file_types;
+ 	{ "kexec-file-syscall",	0, 0, OPT_KEXEC_FILE_SYSCALL }, \
+ 	{ "lite",		0, 0, OPT_LITE }, \
+ 	{ "debug",		0, 0, OPT_DEBUG }, \
++	{ "load-hardboot",	0, 0, OPT_LOAD_HARDBOOT}, \
+ 
+ #define KEXEC_OPT_STR "h?vdfxyluet:ps"
+ 
+-- 
+2.5.5
+

@@ -1,0 +1,36 @@
+diff --git a/kexec/arch/arm64/kexec-arm64.c b/kexec/arch/arm64/kexec-arm64.c
+index c58d60a..6613a64 100644
+--- a/kexec/arch/arm64/kexec-arm64.c
++++ b/kexec/arch/arm64/kexec-arm64.c
+@@ -481,20 +481,21 @@ static int read_proc_dtb(struct dtb *dtb, const char *command_line)
+ 
+ static int read_sys_dtb(struct dtb *dtb, const char *command_line)
+ {
+-	int result;
+ 	struct stat s;
+ 	static const char path[] = "/sys/firmware/fdt";
+-
+-	result = stat(path, &s);
+-
+-	if (result) {
+-		dbgprintf("%s: %s\n", __func__, strerror(errno));
++	static const char devpath1[] = "/dev/block/platform/sdhci-tegra.3/by-name/DTB";
++	static const char devpath2[] = "/dev/block/platform/tegra-sata.0/by-name/DTB";
++
++	if (!stat(path, &s))
++		dtb->path = path;
++	else if (!stat(devpath1, &s))
++		dtb->path = devpath1;
++	else if (!stat(devpath2, &s))
++		dtb->path = devpath2;
++	else
+ 		return -1;
+-	}
+-
+-	dtb->path = path;
+-	dtb->buf = slurp_file("/sys/firmware/fdt", &dtb->size);
+ 
++	dtb->buf = slurp_file(dtb->path, &dtb->size);
+ 	return set_bootargs(dtb, command_line);
+ }
+ 
