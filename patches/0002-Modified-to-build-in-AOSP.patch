@@ -1,4 +1,4 @@
-From b890a8e69668abaa1af860ac5cf5c05b5a87055e Mon Sep 17 00:00:00 2001
+From 6d3743d2149a8b0facd0d94e672da41738b0d8ab Mon Sep 17 00:00:00 2001
 From: Zhuowei Zhang <zhuoweizhang@yahoo.com>
 Date: Sun, 27 Dec 2015 19:18:40 -0800
 Subject: [PATCH] Modified to build in AOSP
@@ -31,7 +31,7 @@ index 81e03ab..914c066 100644
 -/include/config.h
 diff --git a/Android.mk b/Android.mk
 new file mode 100644
-index 0000000..f1788db
+index 0000000..258bcdf
 --- /dev/null
 +++ b/Android.mk
 @@ -0,0 +1,79 @@
@@ -86,7 +86,7 @@ index 0000000..f1788db
 +                                 kexec/arch/arm/kexec-uImage-arm.c \
 +                                 kexec/arch/arm/kexec-arm.c \
 +                                 kexec/arch/arm/crashdump-arm.c
-+ARM_C_INCLUDES :=                $(LOCAL_PATH)/kexec/arch/arm/include \
++ARM_C_INCLUDES :=                $(LOCAL_PATH)/kexec/arch/arm/include
 +ARM_CFLAGS += -include $(LOCAL_PATH)/kexec/arch/arm/kexec-arm.h \
 +              -include $(LOCAL_PATH)/kexec/arch/arm/crashdump-arm.h
 +
