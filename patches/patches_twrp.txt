@@ -7,3 +7,4 @@ adbd_omni6	system/extras/multirom/adbd
 0002-Modified-to-build-in-AOSP	system/extras/multirom/kexec-tools
 0003-Add-kexec-hardboot-options	system/extras/multirom/kexec-tools
 kexec_tool_arm64_dtb_part	system/extras/multirom/kexec-tools
+dblflip	bootable/recovery
