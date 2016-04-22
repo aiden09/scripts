@@ -2,6 +2,7 @@
 <manifest>
 	<project name="CM-Shield/android_device_nvidia_shield-common" path="device/nvidia/shield-common" remote="github" revision="cm-13.0" />
 	<project name="CM-Shield/android_kernel_nvidia_shield" path="kernel/nvidia/shield" remote="github" revision="cm-13.0" />
+	<project name="CM-Shield/android_kernel_nvidia_shieldtablet" path="kernel/nvidia/shieldtablet" remote="github" revision="cm-12.1" />
 	<project name="CM-Shield/android_device_nvidia_foster" path="device/nvidia/foster" remote="github" revision="cm-13.0-mrom" />
 	<project name="CM-Shield/android_device_nvidia_shieldtablet" path="device/nvidia/shieldtablet" remote="github" revision="cm-13.0-mrom" />
 	<project name="CM-Shield/android_device_nvidia_loki" path="device/nvidia/loki" remote="github" revision="cm-13.0-mrom" />
