@@ -1,0 +1,67 @@
+diff --git a/minuitwrp/graphics_fbdev.cpp b/minuitwrp/graphics_fbdev.cpp
+index 24294be..04b4575 100644
+--- a/minuitwrp/graphics_fbdev.cpp
++++ b/minuitwrp/graphics_fbdev.cpp
+@@ -104,14 +104,36 @@ static GRSurface* fbdev_init(minui_backend* backend) {
+         return NULL;
+     }
+ 
+-    fb_fix_screeninfo fi;
+-    if (ioctl(fd, FBIOGET_FSCREENINFO, &fi) < 0) {
++    if (ioctl(fd, FBIOGET_VSCREENINFO, &vi) < 0) {
+         perror("failed to get fb0 info");
+         close(fd);
+         return NULL;
+     }
+ 
+-    if (ioctl(fd, FBIOGET_VSCREENINFO, &vi) < 0) {
++#ifdef RECOVERY_FORCE_RGB_565
++    printf("Forcing pixel format: RGB_565\n");
++    vi.blue.offset    = 0;
++    vi.green.offset   = 5;
++    vi.red.offset     = 11;
++    vi.blue.length    = 5;
++    vi.green.length   = 6;
++    vi.red.length     = 5;
++    vi.blue.msb_right = 0;
++    vi.green.msb_right = 0;
++    vi.red.msb_right = 0;
++    vi.transp.offset  = 0;
++    vi.transp.length  = 0;
++    vi.bits_per_pixel = 16;
++
++    if (ioctl(fd, FBIOPUT_VSCREENINFO, &vi) < 0) {
++        perror("failed to put force_rgb_565 fb0 info");
++        close(fd);
++        return NULL;
++    }
++#endif
++
++    fb_fix_screeninfo fi;
++    if (ioctl(fd, FBIOGET_FSCREENINFO, &fi) < 0) {
+         perror("failed to get fb0 info");
+         close(fd);
+         return NULL;
+@@ -147,22 +169,6 @@ static GRSurface* fbdev_init(minui_backend* backend) {
+ 
+     memset(bits, 0, fi.smem_len);
+ 
+-#ifdef RECOVERY_FORCE_RGB_565
+-    printf("Forcing pixel format: RGB_565\n");
+-    vi.blue.offset    = 0;
+-    vi.green.offset   = 5;
+-    vi.red.offset     = 11;
+-    vi.blue.length    = 5;
+-    vi.green.length   = 6;
+-    vi.red.length     = 5;
+-    vi.blue.msb_right = 0;
+-    vi.green.msb_right = 0;
+-    vi.red.msb_right = 0;
+-    vi.transp.offset  = 0;
+-    vi.transp.length  = 0;
+-    vi.bits_per_pixel = 16;
+-#endif
+-
+     gr_framebuffer[0].width = vi.xres;
+     gr_framebuffer[0].height = vi.yres;
+     gr_framebuffer[0].row_bytes = fi.line_length;
