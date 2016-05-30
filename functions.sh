@@ -15,7 +15,7 @@ SetVars () {
 	CMDIR=${TOPBUILDDIR}/cm;
 	CMBRANCH="cm-13.0";
 	TWRPDIR=${TOPBUILDDIR}/omni_min;
-	TWRPBRANCH="android-6.0";
+	TWRPBRANCH="twrp-6.0";
 	PATCHDIR=${TOPBUILDDIR}/scripts/patches;
 	ORIGPATH="${PATH}"
 
@@ -228,8 +228,7 @@ update_twrp () {
 	cd ${TWRPDIR};
 	if [ "${REPOINIT}" == "true" ]; then
 		logadd "(Re)Initializing TWRP repo";
-		repo init -u https://github.com/nucked/twrp_recovery_manifest -b ${TWRPBRANCH};
-		sed -i 's|.*default revision.*|  <default revision="refs/tags/android-6.0.1_r13"|' ${TWRPDIR}/.repo/manifest.xml
+		repo init -u https://github.com/lj50036/platform_manifest_twrp_omni -b ${TWRPBRANCH};
 	fi;
 
 	# Update the repo
